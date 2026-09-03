@@ -74,6 +74,18 @@ python watcher.py --once   # verarbeitet aktuelle Dateien einmalig und beendet
 - Erneuter Start erkennt einen bereits laufenden Wächter und tut nichts.
 - Der Hintergrundprozess läuft unabhängig vom startenden Fenster weiter (eigene Session) und endet nur durch `kill $(cat watcher.pid)` bzw. `taskkill /PID <pid> /F` oder einen Neustart des Rechners.
 
+**macOS: Nach dem Download von GitHub blockiert / „container of alias … kann nicht umgewandelt werden“:**
+Wurde das Repo als ZIP von GitHub heruntergeladen, markiert macOS alle Dateien als „Quarantäne“.
+Das führt zu zwei Problemen bei `Watcher starten.app`:
+1. Gatekeeper blockiert den Start („Apple konnte nicht überprüfen …“) – ohne direkten „Trotzdem öffnen“-Button im Dialog. Fix: **Systemeinstellungen → Datenschutz & Sicherheit** öffnen, ganz unten erscheint „Trotzdem öffnen“, bestätigen.
+2. Selbst danach kann noch ein AppleScript-Fehler kommen (`container of alias "…:d:Watcher starten.app:" kann nicht in Typ alias umgewandelt werden`) – das ist **App Translocation**: macOS führt die App aus einem isolierten Temp-Ordner aus, in dem `start.py` & Co. nicht sichtbar sind.
+
+Fix für beides auf einmal – Terminal öffnen und ausführen (den ganzen heruntergeladenen Ordner, nicht nur die App, aus dem Finder ins Terminal ziehen, um den Pfad einzufügen):
+```bash
+xattr -dr com.apple.quarantine /pfad/zum/budget-watcher-ordner
+```
+Danach `Watcher starten.app` erneut doppelklicken.
+
 Prozessablauf je Datei:
 1. Wächter meldet neue `.pdf`/`.csv` in `eingabe/` (wartet, bis die Datei vollständig kopiert ist)
 2. Bei PDF: lokale KI wird bei Bedarf hochgefahren (`auto_start`), extrahiert Datum/Empfänger/Beschreibung/Betrag als JSON (sonst Fallback-Parser). Bei CSV: Spalten werden direkt gelesen.
