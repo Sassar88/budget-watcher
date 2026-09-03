@@ -1,7 +1,15 @@
 -- Quelle für "Watcher starten.app" (macOS-Doppelklick-Launcher, kein sichtbares Terminal).
 -- Neu kompilieren nach Änderungen: osacompile -o "Watcher starten.app" start.applescript
 
-set repoDir to POSIX path of (container of (path to me) as alias)
+set appPosixPath to POSIX path of (path to me)
+set oldDelims to AppleScript's text item delimiters
+set AppleScript's text item delimiters to "/"
+set pathParts to text items of appPosixPath
+-- appPosixPath endet auf ".../Watcher starten.app/" -> letzte zwei Teile (Appname, leerer Rest) entfernen
+set pathParts to items 1 thru -3 of pathParts
+set repoDir to (pathParts as text) & "/"
+set AppleScript's text item delimiters to oldDelims
+
 set pyBin to repoDir & ".venv/bin/python"
 
 try
