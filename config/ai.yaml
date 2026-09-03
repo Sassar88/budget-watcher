@@ -1,0 +1,14 @@
+# Lokale KI: jeder OpenAI-kompatible lokale Endpoint (Ollama, LM Studio, …)
+base_url: http://localhost:11434/v1   # Ollama-Standard; LM Studio wäre: http://localhost:1234/v1
+model: qwen2.5:3b                     # z. B. qwen2.5:3b (schnell) oder qwen2.5:7b (genauer)
+temperature: 0
+timeout_seconds: 300
+api_key: local                        # Platzhalter – lokale Endpoints brauchen keinen echten Key
+
+# KI-Server beim ersten PDF automatisch starten (startet `ollama serve`, falls nicht erreichbar)
+auto_start: true
+startup_timeout_seconds: 90
+
+# Einfache Regex-Parsung (deutsches Auszugsformat), wenn die KI ausfällt oder nichts liefert
+fallback:
+  enabled: true

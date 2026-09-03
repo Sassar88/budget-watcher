@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+.DS_Store
+watcher.log
+watcher.pid
+.idea/
+*.iml
+
+# echte Finanzdaten und daraus gelernte Regeln nie versionieren
+eingabe/*.pdf
+eingabe/*.csv
+verarbeitet/*.pdf
+verarbeitet/*.csv
+fehler/*.pdf
+fehler/*.csv
+ausgabe/*.xlsx
+ausgabe/backups/
+config/rules/01-gelernt/
